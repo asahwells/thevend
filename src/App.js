@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import Addtodo from "./Component/Addtodo";
+import Todos from "./Component/Todos";
+export default class App extends Component {
+  state = {
+    todo: [],
+    value: "dammy foolish"
+  };
+  handleChange = e => {
+    this.setState({ value: e.target.value });
+  };
+  handleSubmit = e => {
+    e.preventDefault();
+    this.setState({
+      todo: [...this.state.todo, this.state.value],
+      value: ""
+    });
+  };
+  handleDelete = tod => {
+    let newTodo = [...this.state.todo];
+    let filterTodos = newTodo.filter(dodo => dodo !== tod);
+    this.setState({ todo: filterTodos });
+  };
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  componentDidUpdate() {
+    console.log("updated");
+  }
+  componentDidMount() {
+    console.log("mounted");
+  }
+  render() {
+    const { value, todo } = this.state;
+    return (
+      <div>
+        <h1>Todo</h1>
+        <Addtodo
+          todo={todo}
+          value={value}
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+        />
+        <Todos todo={todo} handleDelete={this.handleDelete} />
+      </div>
+    );
+  }
 }
-
-export default App;
